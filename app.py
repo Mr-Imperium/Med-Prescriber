@@ -82,92 +82,141 @@ def get_disease_details(disease, description, precautions, workout, medications,
 def create_disease_info_tab(description, precautions, workout, medications, diets):
     st.title("Disease Information Database")
     
-    # Custom CSS for card-like appearance
+    # Custom CSS for card-like appearance and modal
     st.markdown("""
     <style>
+    .disease-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
     .disease-card {
         border: 1px solid #e6e6e6;
         border-radius: 10px;
         padding: 15px;
-        margin: 10px 0;
         background-color: #f9f9f9;
-        transition: transform 0.3s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
+        text-align: center;
     }
     .disease-card:hover {
-        transform: scale(1.03);
+        transform: scale(1.05);
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    .disease-card h3 {
-        color: #2c3e50;
-        margin-bottom: 10px;
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        justify-content: center;
+        align-items: center;
     }
-    .disease-card p {
-        color: #34495e;
+    .modal-content {
+        background-color: #fefefe;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 600px;
+        max-height: 80%;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .close:hover {
+        color: black;
     }
     </style>
     """, unsafe_allow_html=True)
     
-    # Get unique diseases with descriptions
-    disease_info = description[['Disease', 'Description']].drop_duplicates()
+    # Get unique diseases with descriptions, sorted alphabetically
+    disease_info = description[['Disease', 'Description']].drop_duplicates().sort_values('Disease')
     
-    # Create a grid of disease cards
-    cols = st.columns(3)  # 3 columns of cards
+    # Group diseases by their first letter
+    disease_groups = {}
+    for _, row in disease_info.iterrows():
+        first_letter = row['Disease'][0].upper()
+        if first_letter not in disease_groups:
+            disease_groups[first_letter] = []
+        disease_groups[first_letter].append(row)
     
-    for idx, (_, row) in enumerate(disease_info.iterrows()):
-        # Cycle through columns
-        col = cols[idx % 3]
-        
-        with col:
-            # Create a container for each disease
-            with st.container():
-                # Create an expander for detailed information
-                with st.expander(f"{row['Disease']}"):
-                    # Get disease details
-                    desc, pre, med, die, wrkout = get_disease_details(
-                        row['Disease'], 
-                        description, 
-                        precautions, 
-                        workout, 
-                        medications, 
-                        diets
-                    )
-                    
-                    # Description
-                    st.markdown("### Description")
-                    st.write(desc)
-                    
-                    # Precautions
-                    st.markdown("### Precautions")
-                    if pre:
-                        for p in pre:
-                            st.write(f"- {p}")
-                    else:
-                        st.write("No precautions available.")
-                    
-                    # Medications
-                    st.markdown("### Medications")
-                    if med:
-                        for m in med:
-                            st.write(f"- {m}")
-                    else:
-                        st.write("No medications information available.")
-                    
-                    # Workout
-                    st.markdown("### Recommended Non-Pharmacological Measures")
-                    if wrkout:
-                        for w in wrkout:
-                            st.write(f"- {w}")
-                    else:
-                        st.write("No workout information available.")
-                    
-                    # Diets
-                    st.markdown("### Recommended Diets")
-                    if die:
-                        for d in die:
-                            st.write(f"- {d}")
-                    else:
-                        st.write("No diet information available.")
+    # Create tabs for each letter
+    letters = sorted(disease_groups.keys())
+    letter_tabs = st.tabs(letters)
+    
+    # Custom JavaScript for modal functionality
+    st.markdown("""
+    <script>
+    function openModal(diseaseId) {
+        document.getElementById(diseaseId).style.display = "flex";
+    }
+    function closeModal(diseaseId) {
+        document.getElementById(diseaseId).style.display = "none";
+    }
+    </script>
+    """, unsafe_allow_html=True)
+    
+    # Populate tabs with disease cards
+    for i, letter in enumerate(letters):
+        with letter_tabs[i]:
+            st.markdown(f"<div class='disease-grid'>", unsafe_allow_html=True)
+            
+            for _, disease in enumerate(disease_groups[letter]):
+                # Unique modal ID
+                modal_id = f"modal_{disease['Disease'].replace(' ', '_')}"
+                
+                # Generate disease details
+                desc, pre, med, die, wrkout = get_disease_details(
+                    disease['Disease'], 
+                    description, 
+                    precautions, 
+                    workout, 
+                    medications, 
+                    diets
+                )
+                
+                # Card HTML
+                st.markdown(f"""
+                <div class='disease-card' onclick="openModal('{modal_id}')">
+                    {disease['Disease']}
+                </div>
+
+                <!-- Modal -->
+                <div id='{modal_id}' class='modal'>
+                    <div class='modal-content'>
+                        <span class='close' onclick="closeModal('{modal_id}')">&times;</span>
+                        <h2>{disease['Disease']}</h2>
+                        
+                        <h3>Description</h3>
+                        <p>{desc}</p>
+                        
+                        <h3>Precautions</h3>
+                        {"".join(f"<p>- {p}</p>" for p in pre) if pre else "<p>No precautions available.</p>"}
+                        
+                        <h3>Medications</h3>
+                        {"".join(f"<p>- {m}</p>" for m in med) if med else "<p>No medications information available.</p>"}
+                        
+                        <h3>Recommended Non-Pharmacological Measures</h3>
+                        {"".join(f"<p>- {w}</p>" for w in wrkout) if wrkout else "<p>No workout information available.</p>"}
+                        
+                        <h3>Recommended Diets</h3>
+                        {"".join(f"<p>- {d}</p>" for d in die) if die else "<p>No diet information available.</p>"}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            st.markdown("</div>", unsafe_allow_html=True)
 
 def main():
     # Load model and data
