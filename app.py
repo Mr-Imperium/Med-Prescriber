@@ -147,23 +147,7 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
     # Create a grid of disease cards
     st.markdown(f"<div class='disease-grid'>", unsafe_allow_html=True)
     
-    # Custom JavaScript for modal functionality
-    st.markdown("""
-    <script>
-    function openModal(diseaseId) {
-        document.getElementById(diseaseId).style.display = "flex";
-    }
-    function closeModal(diseaseId) {
-        document.getElementById(diseaseId).style.display = "none";
-    }
-    </script>
-    """, unsafe_allow_html=True)
-    
-    # Populate grid with disease cards
     for _, disease in disease_info.iterrows():
-        # Unique modal ID
-        modal_id = f"modal_{disease['Disease'].replace(' ', '_')}"
-        
         # Generate disease details
         desc, pre, med, die, wrkout = get_disease_details(
             disease['Disease'], 
@@ -176,13 +160,13 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
         
         # Card HTML
         st.markdown(f"""
-        <div class="disease-card" onclick="openModal('{modal_id}')">
+        <div class="disease-card" onclick="document.getElementById('modal_{disease['Disease'].replace(' ', '_')}').style.display='flex'">
             {disease['Disease']}
         </div>
 
-        <div id='{modal_id}' class="modal" style="display: none;">
+        <div id='modal_{disease['Disease'].replace(' ', '_')}' class="modal" style="display: none;">
             <div class="modal-content">
-                <span class="close" onclick="closeModal('{modal_id}')">&times;</span>
+                <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
                 <h2>{disease['Disease']}</h2>
                 
                 <h3>Description</h3>
