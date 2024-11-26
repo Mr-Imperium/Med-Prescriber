@@ -1,6 +1,84 @@
 import streamlit as st
 import pandas as pd
+# Set page config as the first command
+st.set_page_config(page_title="Disease Prediction App", layout="wide")
 
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
+from sklearn.svm import SVC
+import pickle
+
+# Load the model and data
+@st.cache_resource
+def load_model_and_data():
+    # Load the trained model
+    with open('svc.pkl', 'rb') as f:
+        svc = pickle.load(f)
+    
+    # Load datasets
+    description = pd.read_csv("data/description.csv")
+    precautions = pd.read_csv("data/precautions_df.csv")
+    workout = pd.read_csv("data/workout_df.csv")
+    medications = pd.read_csv("data/medications.csv")
+    diets = pd.read_csv("data/diets.csv")
+    
+    # Load training data to get symptoms
+    dataset = pd.read_csv('data/Training.csv')
+    symptoms = list(dataset.drop('prognosis', axis=1).columns)
+    
+    return svc, symptoms, description, precautions, workout, medications, diets
+
+# Prediction function
+def get_predicted_value(svc, symptoms_dict, patient_symptoms):
+    # Create input vector based on all possible symptoms
+    input_vector = np.zeros(len(symptoms_dict))
+    
+    # Mark input symptoms as present
+    for item in patient_symptoms:
+        input_vector[symptoms_dict[item]] = 1
+    
+    # Predict disease index
+    predicted_index = svc.predict([input_vector])[0]
+    
+    # Load the label encoder to convert index to disease name
+    with open('label_encoder.pkl', 'rb') as f:
+        le = pickle.load(f)
+    
+    # Convert index to disease name
+    predicted_disease = le.inverse_transform([predicted_index])[0]
+    
+    return predicted_disease
+
+# Helper function to get disease details
+def get_disease_details(disease, description, precautions, workout, medications, diets):
+    # Description
+    desc = description[description['Disease'].str.lower().str.strip() == str(disease).lower().strip()]['Description'].values
+    desc = desc[0] if len(desc) > 0 else "No description available."
+    
+    # Precautions
+    pre_df = precautions[precautions['Disease'].str.lower().str.strip() == str(disease).lower().strip()]
+    pre = []
+    if not pre_df.empty:
+        pre = [pre_df['Precaution_1'].values[0], 
+               pre_df['Precaution_2'].values[0], 
+               pre_df['Precaution_3'].values[0], 
+               pre_df['Precaution_4'].values[0]]
+        pre = [p for p in pre if p and str(p).strip()]
+    
+    # Medications
+    med_df = medications[medications['Disease'].str.lower().str.strip() == str(disease).lower().strip()]
+    med = med_df['Medication'].tolist() if not med_df.empty else []
+    
+    # Diets
+    die_df = diets[diets['Disease'].str.lower().str.strip() == str(disease).lower().strip()]
+    die = die_df['Diet'].tolist() if not die_df.empty else []
+    
+    # Workout
+    wrkout_df = workout[workout['disease'].str.lower().str.strip() == str(disease).lower().strip()]
+    wrkout = wrkout_df['workout'].tolist() if not wrkout_df.empty else []
+    
+    return desc, pre, med, die, wrkout
 def create_disease_info_tab(description, precautions, workout, medications, diets):
     st.title("Disease Information Database")
     
