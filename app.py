@@ -143,17 +143,8 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
     # Get unique diseases with descriptions, sorted alphabetically
     disease_info = description[['Disease', 'Description']].drop_duplicates().sort_values('Disease')
     
-    # Group diseases by their first letter
-    disease_groups = {}
-    for _, row in disease_info.iterrows():
-        first_letter = row['Disease'][0].upper()
-        if first_letter not in disease_groups:
-            disease_groups[first_letter] = []
-        disease_groups[first_letter].append(row)
-    
-    # Create tabs for each letter
-    letters = sorted(disease_groups.keys())
-    letter_tabs = st.tabs(letters)
+    # Create a grid of disease cards
+    st.markdown(f"<div class='disease-grid'>", unsafe_allow_html=True)
     
     # Custom JavaScript for modal functionality
     st.markdown("""
@@ -167,56 +158,52 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
     </script>
     """, unsafe_allow_html=True)
     
-    # Populate tabs with disease cards
-    for i, letter in enumerate(letters):
-        with letter_tabs[i]:
-            st.markdown(f"<div class='disease-grid'>", unsafe_allow_html=True)
-            
-            for _, disease in enumerate(disease_groups[letter]):
-                # Unique modal ID
-                modal_id = f"modal_{disease['Disease'].replace(' ', '_')}"
-                
-                # Generate disease details
-                desc, pre, med, die, wrkout = get_disease_details(
-                    disease['Disease'], 
-                    description, 
-                    precautions, 
-                    workout, 
-                    medications, 
-                    diets
-                )
-                
-                # Card HTML
-                st.markdown(f"""
-                <div class='disease-card' onclick="openModal('{modal_id}')">
-                    {disease['Disease']}
-                </div>
+    # Populate grid with disease cards
+    for _, disease in disease_info.iterrows():
+        # Unique modal ID
+        modal_id = f"modal_{disease['Disease'].replace(' ', '_')}"
+        
+        # Generate disease details
+        desc, pre, med, die, wrkout = get_disease_details(
+            disease['Disease'], 
+            description, 
+            precautions, 
+            workout, 
+            medications, 
+            diets
+        )
+        
+        # Card HTML
+        st.markdown(f"""
+        <div class='disease-card' onclick="openModal('{modal_id}')">
+            {disease['Disease']}
+        </div>
 
-                <!-- Modal -->
-                <div id='{modal_id}' class='modal'>
-                    <div class='modal-content'>
-                        <span class='close' onclick="closeModal('{modal_id}')">&times;</span>
-                        <h2>{disease['Disease']}</h2>
-                        
-                        <h3>Description</h3>
-                        <p>{desc}</p>
-                        
-                        <h3>Precautions</h3>
-                        {"".join(f"<p>- {p}</p>" for p in pre) if pre else "<p>No precautions available.</p>"}
-                        
-                        <h3>Medications</h3>
-                        {"".join(f"<p>- {m}</p>" for m in med) if med else "<p>No medications information available.</p>"}
-                        
-                        <h3>Recommended Non-Pharmacological Measures</h3>
-                        {"".join(f"<p>- {w}</p>" for w in wrkout) if wrkout else "<p>No workout information available.</p>"}
-                        
-                        <h3>Recommended Diets</h3>
-                        {"".join(f"<p>- {d}</p>" for d in die) if die else "<p>No diet information available.</p>"}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            st.markdown("</div>", unsafe_allow_html=True)
+        <!-- Modal -->
+        <div id='{modal_id}' class='modal'>
+            <div class='modal-content'>
+                <span class='close' onclick="closeModal('{modal_id}')">&times;</span>
+                <h2>{disease['Disease']}</h2>
+                
+                <h3>Description</h3>
+                <p>{desc}</p>
+                
+                <h3>Precautions</h3>
+                {"".join(f"<p>- {p}</p>" for p in pre) if pre else "<p>No precautions available.</p>"}
+                
+                <h3>Medications</h3>
+                {"".join(f"<p>- {m}</p>" for m in med) if med else "<p>No medications information available.</p>"}
+                
+                <h3>Recommended Non-Pharmacological Measures</h3>
+                {"".join(f"<p>- {w}</p>" for w in wrkout) if wrkout else "<p>No workout information available.</p>"}
+                
+                <h3>Recommended Diets</h3>
+                {"".join(f"<p>- {d}</p>" for d in die) if die else "<p>No diet information available.</p>"}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
 def main():
     # Load model and data
