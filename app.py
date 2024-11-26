@@ -1,4 +1,8 @@
 import streamlit as st
+
+# Set page config as the first command
+st.set_page_config(page_title="Disease Prediction App", layout="wide")
+
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
@@ -75,9 +79,6 @@ def main():
     
     # Create symptoms dictionary
     symptoms_dict = {symptom: index for index, symptom in enumerate(all_symptoms)}
-    
-    # Set up the Streamlit app
-    st.set_page_config(page_title="Disease Prediction App", layout="wide")
     
     # Create tabs
     tab1, tab2 = st.tabs(["Symptom Checker", "Disease Information"])
@@ -165,7 +166,7 @@ def main():
         })
         
         # Display table with disease info
-        selected_disease = st.dataframe(
+        st.dataframe(
             disease_df, 
             column_config={
                 "Disease": st.column_config.TextColumn("Disease Name"),
@@ -174,64 +175,6 @@ def main():
             hide_index=True,
             use_container_width=True
         )
-        
-        # Detailed disease information on selection
-        if st.button("Show Details of Selected Disease"):
-            # Get the selected disease from the dataframe
-            selected_row = st.session_state.get('edited_rows', {}).get(0, {})
-            if selected_row and 'Disease' in selected_row:
-                disease_name = selected_row['Disease']
-                
-                # Get disease details
-                desc, pre, med, die, wrkout = get_disease_details(
-                    disease_name, 
-                    description, 
-                    precautions, 
-                    workout, 
-                    medications, 
-                    diets
-                )
-                
-                # Display detailed information
-                st.subheader(f"Details for {disease_name}")
-                
-                # Description
-                st.markdown("### Description")
-                st.write(desc)
-                
-                # Precautions
-                st.markdown("### Precautions")
-                if pre:
-                    for p in pre:
-                        st.write(f"- {p}")
-                else:
-                    st.write("No precautions available.")
-                
-                # Medications
-                st.markdown("### Medications")
-                if med:
-                    for m in med:
-                        st.write(f"- {m}")
-                else:
-                    st.write("No medications information available.")
-                
-                # Workout
-                st.markdown("### Recommended Workouts")
-                if wrkout:
-                    for w in wrkout:
-                        st.write(f"- {w}")
-                else:
-                    st.write("No workout information available.")
-                
-                # Diets
-                st.markdown("### Recommended Diets")
-                if die:
-                    for d in die:
-                        st.write(f"- {d}")
-                else:
-                    st.write("No diet information available.")
-            else:
-                st.warning("Please select a disease from the table.")
 
 # Run the app
 if __name__ == "__main__":
