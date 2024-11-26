@@ -87,22 +87,26 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
     <style>
     .disease-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(3, 1fr);  /* Changed to 3 columns */
+        gap: 20px;
+        padding: 15px;
     }
     .disease-card {
         border: 1px solid #e6e6e6;
         border-radius: 10px;
-        padding: 15px;
-        background-color: rgba(255, 255, 255, 0.2);
-        color: white;
+        padding: 20px;
+        background-color: #f8f9fa;  /* Lighter background */
+        color: #333;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
         text-align: center;
+        font-weight: bold;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     .disease-card:hover {
         transform: scale(1.05);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        background-color: #e9ecef;
     }
     .modal {
         display: none;
@@ -113,30 +117,55 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgba(0,0,0,0.4);
+        background-color: rgba(0,0,0,0.5);
         justify-content: center;
         align-items: center;
+        padding: 20px;
     }
     .modal-content {
-        background-color: #fefefe;
-        padding: 20px;
-        border-radius: 10px;
-        width: 80%;
-        max-width: 600px;
-        max-height: 80%;
+        background-color: white;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 80vh;
         overflow-y: auto;
+        padding: 30px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         position: relative;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .modal-header {
+        background-color: #007bff;
+        color: white;
+        padding: 15px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        margin: -30px -30px 20px -30px;
+    }
+    .modal-section {
+        margin-bottom: 20px;
+    }
+    .modal-section h3 {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+        color: #007bff;
+    }
+    .modal-section ul {
+        padding-left: 20px;
     }
     .close {
-        color: #aaa;
+        color: white;
         float: right;
-        font-size: 28px;
+        font-size: 30px;
         font-weight: bold;
         cursor: pointer;
     }
     .close:hover {
-        color: black;
+        color: #ccc;
+    }
+    @media (max-width: 768px) {
+        .disease-grid {
+            grid-template-columns: 1fr;  /* Single column on small screens */
+        }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -158,31 +187,54 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
             diets
         )
         
+        # Safe ID generation
+        safe_id = disease['Disease'].replace(' ', '_').replace('/', '_')
+        
         # Card HTML
         st.markdown(f"""
-        <div class="disease-card" onclick="document.getElementById('modal_{disease['Disease'].replace(' ', '_')}').style.display='flex'">
+        <div class="disease-card" onclick="document.getElementById('modal_{safe_id}').style.display='flex'">
             {disease['Disease']}
         </div>
 
-        <div id='modal_{disease['Disease'].replace(' ', '_')}' class="modal" style="display: none;">
+        <div id='modal_{safe_id}' class="modal" style="display: none;">
             <div class="modal-content">
-                <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
-                <h2>{disease['Disease']}</h2>
+                <div class="modal-header">
+                    <span class="close" onclick="this.parentElement.parentElement.parentElement.style.display='none'">&times;</span>
+                    <h2>{disease['Disease']}</h2>
+                </div>
                 
-                <h3>Description</h3>
-                <p>{desc}</p>
+                <div class="modal-section">
+                    <h3>Description</h3>
+                    <p>{desc}</p>
+                </div>
                 
-                <h3>Precautions</h3>
-                {"".join(f"<p>- {p}</p>" for p in pre) if pre else "<p>No precautions available.</p>"}
+                <div class="modal-section">
+                    <h3>Precautions</h3>
+                    <ul>
+                        {"".join(f"<li>{p}</li>" for p in pre) if pre else "<li>No precautions available.</li>"}
+                    </ul>
+                </div>
                 
-                <h3>Medications</h3>
-                {"".join(f"<p>- {m}</p>" for m in med) if med else "<p>No medications information available.</p>"}
+                <div class="modal-section">
+                    <h3>Medications</h3>
+                    <ul>
+                        {"".join(f"<li>{m}</li>" for m in med) if med else "<li>No medications information available.</li>"}
+                    </ul>
+                </div>
                 
-                <h3>Recommended Non-Pharmacological Measures</h3>
-                {"".join(f"<p>- {w}</p>" for w in wrkout) if wrkout else "<p>No workout information available.</p>"}
+                <div class="modal-section">
+                    <h3>Recommended Non-Pharmacological Measures</h3>
+                    <ul>
+                        {"".join(f"<li>{w}</li>" for w in wrkout) if wrkout else "<li>No workout information available.</li>"}
+                    </ul>
+                </div>
                 
-                <h3>Recommended Diets</h3>
-                {"".join(f"<p>- {d}</p>" for d in die) if die else "<p>No diet information available.</p>"}
+                <div class="modal-section">
+                    <h3>Recommended Diets</h3>
+                    <ul>
+                        {"".join(f"<li>{d}</li>" for d in die) if die else "<li>No diet information available.</li>"}
+                    </ul>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
