@@ -176,14 +176,14 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
         
         # Card HTML
         st.markdown(f"""
-        <div class='disease-card' onclick="openModal('{modal_id}')">
+        <div class="disease-card" onclick="openModal('{modal_id}')">
             {disease['Disease']}
         </div>
 
         <!-- Modal -->
-        <div id='{modal_id}' class='modal'>
-            <div class='modal-content'>
-                <span class='close' onclick="closeModal('{modal_id}')">&times;</span>
+        <div id='{modal_id}' class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('{modal_id}')">&times;</span>
                 <h2>{disease['Disease']}</h2>
                 
                 <h3>Description</h3>
@@ -205,7 +205,6 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
         """, unsafe_allow_html=True)
     
     st.markdown("</div>", unsafe_allow_html=True)
-
 def main():
     # Load model and data
     svc, le, all_symptoms, description, precautions, workout, medications, diets = load_model_and_data()
