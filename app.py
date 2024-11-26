@@ -180,7 +180,6 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
             {disease['Disease']}
         </div>
 
-        <!-- Modal -->
         <div id='{modal_id}' class="modal" style="display: none;">
             <div class="modal-content">
                 <span class="close" onclick="closeModal('{modal_id}')">&times;</span>
