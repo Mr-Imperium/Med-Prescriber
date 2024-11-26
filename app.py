@@ -94,7 +94,8 @@ def create_disease_info_tab(description, precautions, workout, medications, diet
         border: 1px solid #e6e6e6;
         border-radius: 10px;
         padding: 15px;
-        background-color: #f9f9f9;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
         text-align: center;
