@@ -20,7 +20,7 @@ def load_model_and_data():
     diets = pd.read_csv("data/diets.csv")
     
     # Load training data to get symptoms
-    dataset = pd.read_csv('/kaggle/input/med-prescrib/Training.csv')
+    dataset = pd.read_csv('data/Training.csv')
     symptoms = list(dataset.drop('prognosis', axis=1).columns)
     
     return svc, symptoms, description, precautions, workout, medications, diets
