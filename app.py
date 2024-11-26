@@ -6,7 +6,7 @@ from sklearn.svm import SVC
 import pickle
 
 # Set page config as the first command
-st.set_page_config(page_title="Disease Prediction App", layout="wide")
+st.set_page_config(page_title="Med Prescriber", layout="wide")
 
 # Load the model and data
 @st.cache_resource
