@@ -1,0 +1,42 @@
+Serial,Disease,Precaution_1,Precaution_2,Precaution_3,Precaution_4
+1,Fungal Infection,Use antifungal medications as prescribed,Keep affected areas clean and dry,Wear breathable loose-fitting clothing,Avoid sharing personal items like towels
+2,Allergy,Identify and avoid known allergens,Carry emergency antihistamine medication,Use allergen-proof bedding and covers,Consult an allergist for comprehensive management
+3,GERD,Eat smaller more frequent meals,Avoid trigger foods like spicy and acidic items,Elevate head while sleeping,Maintain a healthy body weight
+4,Chronic cholestasis,Take prescribed medications regularly,Follow a low-fat nutrient-rich diet,Avoid alcohol and hepatotoxic substances,Regular liver function monitoring
+5,Drug Reaction,Immediately stop the suspected medication,Seek immediate medical attention,Inform healthcare providers about the reaction,Keep a detailed record of symptoms
+6,Peptic ulcer disease,Avoid spicy and acidic foods,Take prescribed acid-reducing medications,Manage stress through relaxation techniques,Avoid NSAIDs and aspirin
+7,AIDS,Adhere strictly to antiretroviral therapy,Practice safe sex and use protection,Maintain good personal hygiene,Regular medical check-ups and immune monitoring
+8,Diabetes,Monitor blood sugar levels consistently,Follow a balanced low-glycemic diet,Exercise regularly,Take medications as prescribed
+9,Gastroenteritis,Stay hydrated with clear fluids,Practice strict hand hygiene,Avoid solid foods initially,Gradually reintroduce mild easily digestible foods
+10,Bronchial Asthma,Use prescribed inhaler as directed,Identify and avoid environmental triggers,Practice breathing exercises,Maintain an asthma action plan
+11,Hypertension,Maintain a low-sodium diet,Exercise regularly,Practice stress management techniques,Take prescribed blood pressure medications
+12,Migraine,Identify and avoid personal triggers,Practice stress reduction techniques,Use prescribed preventive medications,Maintain a consistent sleep schedule
+13,Cervical spondylosis,Perform regular neck strengthening exercises,Use ergonomic supports,Apply heat or cold therapy,Take prescribed pain management medications
+14,Paralysis (brain hemorrhage),Seek immediate medical intervention,Follow comprehensive rehabilitation program,Engage in physical and occupational therapy,Maintain a supportive home environment
+15,Jaundice,Follow prescribed liver treatment,Maintain strict dietary restrictions,Avoid alcohol and hepatotoxic substances,Regular liver function monitoring
+16,Malaria,Seek immediate medical treatment,Use mosquito prevention methods,Take prescribed antimalarial medications,Rest and stay hydrated
+17,Chicken pox,Avoid scratching affected areas,Use calamine lotion,Take prescribed antiviral medications,Maintain strict personal hygiene
+18,Dengue,Seek immediate medical attention,Stay hydrated with clear fluids,Rest and avoid physical exertion,Use mosquito prevention methods
+19,Typhoid,Take prescribed antibiotics,Maintain strict personal hygiene,Avoid contaminated food and water,Rest and stay hydrated
+20,Hepatitis A,Follow prescribed medical treatment,Practice strict hand hygiene,Avoid alcohol and fatty foods,Get vaccinated
+21,Hepatitis B,Take prescribed antiviral medications,Follow strict medical monitoring,Avoid alcohol and hepatotoxic substances,Practice safe sex
+22,Hepatitis C,Follow comprehensive treatment plan,Avoid alcohol completely,Maintain regular medical check-ups,Take prescribed antiviral medications
+23,Hepatitis D,Follow prescribed medical treatment,Avoid alcohol and liver-damaging substances,Maintain regular medical monitoring,Take prescribed medications
+24,Hepatitis E,Rest and stay hydrated,Follow medical advice,Avoid alcohol and fatty foods,Practice strict personal hygiene
+25,Alcoholic hepatitis,Complete alcohol cessation,Follow prescribed medical treatment,Maintain nutritious diet,Regular liver function monitoring
+26,Tuberculosis,Take prescribed antibiotics consistently,Maintain respiratory hygiene,Avoid close contact with others,Complete full course of treatment
+27,Common Cold,Rest and stay hydrated,Use over-the-counter symptom relievers,Practice respiratory hygiene,Boost immune system with nutrition
+28,Pneumonia,Take prescribed antibiotics,Rest and stay hydrated,Use prescribed respiratory treatments,Avoid exposure to cold and damp conditions
+29,Dimorphic hemorrhoids (piles),Maintain high-fiber diet,Use prescribed topical treatments,Avoid prolonged sitting,Practice good bathroom hygiene
+30,Heart attack,Seek immediate medical intervention,Follow cardiac rehabilitation program,Maintain heart-healthy diet,Take prescribed medications
+31,Varicose veins,Elevate legs regularly,Use compression stockings,Maintain healthy body weight,Avoid prolonged standing or sitting
+32,Hypothyroidism,Take prescribed thyroid medications,Maintain balanced diet,Exercise regularly,Manage stress levels
+33,Hyperthyroidism,Take prescribed medications,Avoid iodine-rich foods,Manage stress through relaxation techniques,Regular thyroid function monitoring
+34,Hypoglycemia,Carry emergency glucose sources,Eat regular balanced meals,Monitor blood sugar levels,Follow prescribed diabetes management plan
+35,Osteoarthritis,Perform low-impact exercises,Use prescribed pain management,Apply heat or cold therapy,Maintain healthy body weight
+36,Arthritis,Take prescribed anti-inflammatory medications,Perform joint-friendly exercises,Use assistive devices,Maintain healthy diet
+37,(Vertigo) Paroxysmal Positional Vertigo,Perform vestibular rehabilitation exercises,Avoid sudden head movements,Use prescribed medications,Maintain balance and stability
+38,Acne,Follow prescribed skincare routine,Maintain good personal hygiene,Avoid touching face frequently,Use non-comedogenic products
+39,Urinary tract infection,Drink plenty of water,Take prescribed antibiotics,Practice good personal hygiene,Avoid irritating feminine products
+40,Psoriasis,Use prescribed topical treatments,Manage stress levels,Maintain skin moisturization,Avoid triggers and irritants
+41,Impetigo,Use prescribed topical or oral antibiotics,Keep affected areas clean,Avoid skin-to-skin contact,Practice strict personal hygiene
